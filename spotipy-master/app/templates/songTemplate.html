@@ -1,0 +1,80 @@
+<button class="btn btn-default filter-button" id="songs" style="margin-bottom: 0px;" data-filter="all"  onclick="allButton()">Home</button>
+
+{% for ss in mainSong %}
+<div class="jumbotron" id="jumbotron" style="padding: 0px; background-color:white;">
+  <div class="row">
+         	<div class="col-md-3">
+         	</div>
+          <div class="col-md-6 align-items-center">
+          	<h2 class="align-items-center">Search Music</h2>
+              <div id="custom-search-input align-items-center">
+                  <div class="input-group col-md-12">
+                    <form class="" action="/searchMoreLikeThis" method="post" role="form">
+                      <input type="text" class="form-control input-lg" placeholder="Search.." name="searchsMoreLikeThis" />
+  </form>
+                      <span class="input-group-btn">
+                          <button class="btn btn-info btn-lg" type="button" id="search_button" onclick="searchButtonMoreLikeThis()">
+                              <i class="glyphicon glyphicon-search"></i>
+                          </button>
+                      </span>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+         	</div>
+  	</div>
+<div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
+
+    <div id="thumb">
+      <img id="song-picture" src="{{ss['image']}}" alt="">
+    </div>
+    <div id="song">
+      <div id="song-title " style="color:#230f0f;">
+        {{ss['title'][0]}}
+      </div>
+      <div id="artist-name">
+        {{ss['artist'][0]}}
+      </div>
+      <audio id="player" controls>
+        <source src="https://cdns-preview-b.dzcdn.net/stream/c-bdab5f5d846a91f14a01b75731dbc22a-5.mp3" type="audio/mpeg">
+        Su browser es muy viejo!
+      </audio>
+    </div>
+
+  </div>
+  </div>
+<div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
+  <div align="center">
+    <h2 class="">Recommendation to current Song</h2>
+          <button class="btn btn-default filter-button" id="songs" data-filter="all" onclick="allButtonMoreLikeThat()">All</button>
+          <button class="btn btn-default filter-button" id="artists" data-filter="hdpe" onclick="artistButtonMoreLikeThat()">Artists</button>
+          <button class="btn btn-default filter-button" id="album" data-filter="sprinkle" onclick="albumButtonMoreLikeThat()">Album</button>
+          <button class="btn btn-default filter-button" id="mood" data-filter="spray" onclick="moodButtonMoreLikeThat()">Genre / Mood</button>
+      </div>
+
+</div>
+{% endfor %}
+{% for s in result %}
+
+    <div class='list-group gallery' id='test' onclick="moreLikeThat({{s['id']}})">
+            <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3'>
+                <a class="thumbnail fancybox" rel="ligthbox" href="#">
+                    <img class="img-responsive" style="width:100%; height:50%;" alt="" src="{{s['image']}}" />
+                    <div class='' id='some_chars'>
+                        <text class='' >{{s['title'][0]}}</text><br />
+                        <text class='' >{{s['artist'][0]}}</text><br />
+                        <text class='' >{{s['album'][0]}}</text><br />
+                        <text class='' >{{s['genres']}}</text>
+                    </div>
+                </a>
+            </div>
+           </div>
+
+{% endfor %}
+<footer>
+<div class="row col-md-12">
+{% for i in index %}
+<button class="btn btn-default filter-button" id={{i}} data-filter="all" onclick="nextPageMoreLikeThis({{i}})">{{i}}</button>
+{% endfor %}
+</div>
+</footer>

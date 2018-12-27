@@ -1,0 +1,190 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<style>
+
+#custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 23px;
+}
+.gallery-title
+{
+    font-size: 36px;
+    color: #42B32F;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 70px;
+}
+.gallery-title:after {
+    content: "";
+    position: absolute;
+    width: 7.5%;
+    left: 46.5%;
+    height: 45px;
+    border-bottom: 1px solid #5e5e5e;
+}
+.filter-button
+{
+    font-size: 18px;
+    border: 1px solid #42B32F;
+    border-radius: 5px;
+    text-align: center;
+    color: #42B32F;
+    margin-bottom: 30px;
+
+}
+.filter-button:hover
+{
+    font-size: 18px;
+    border: 1px solid #42B32F;
+    border-radius: 5px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #42B32F;
+
+}
+.btn-default:active .filter-button:active
+{
+    background-color: #42B32F;
+    color: white;
+}
+
+.port-image
+{
+    width: 100%;
+}
+
+.gallery_product
+{
+    margin-bottom: 30px;
+}
+   </style>
+   <script type=text/javascript>
+        $(function() {
+          $('a#test').bind('click', function() {
+            $.getJSON('/call_to_song',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<div class="jumbotron">
+    <div class="container">
+
+       <div class="row">
+       	<div class="col-md-3">
+       	</div>
+        <div class="col-md-6 align-items-center">
+        	<h2 class="align-items-center">Search Music</h2>
+            <div id="custom-search-input align-items-center">
+                <div class="input-group col-md-12">
+                    <input type="text" class="form-control input-lg" placeholder="Buscar" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+       	</div>
+	</div>
+    </div><!-- /container -->
+</div><!-- /jumbotron -->
+
+<div class="container">
+	<div class="row">
+
+		<div align="center">
+			<h2 class="">Recommandation</h2>
+		<a href=# id=test><button class="btn btn-default filter-button" data-filter="all">All</button></a>
+        <a href=# id=test><button class="btn btn-default filter-button" data-filter="all">Songs</button></a>
+        <a href=# id=test><button class="btn btn-default filter-button" data-filter="hdpe">Artists</button></a>
+        <a href=# id=test><button class="btn btn-default filter-button" data-filter="sprinkle">Album</button></a>
+        <a href=# id=test><button class="btn btn-default filter-button" data-filter="spray">Popularity</button></a>
+        </div>
+	</div><!-- /row -->
+	<div class="row">
+	    <!-- <div class="col-xs-12 col-sm-2">
+	        <div class="list-group">
+                <span href="#" class="list-group-item active">
+                Apples
+                </span>
+                <a href="#" class="list-group-item">
+                    Songs
+                </a>
+                <a href="#" class="list-group-item">
+                    Artists
+                </a>
+                <a href="#" class="list-group-item">
+                    Albums
+                </a>
+                <a href="#" class="list-group-item">
+                    Popularity
+                </a>
+            </div><!-- /list-group -->
+	  <!--   </div> /col
+ -->
+<!--####
+### How to add in your boostrap project
+1) Add jQuery "<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>"
+2) Download fancybox (https://github.com/fancyapps/fancyBox)
+3) Or use CDN (http://cdnjs.com/libraries/fancybox)
+####--!>
+
+<!-- References: https://github.com/fancyapps/fancyBox -->
+{% for s in result %}
+		<div class='list-group gallery'>
+            <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3'>
+                <a class="thumbnail fancybox" rel="ligthbox" href="#">
+                    <img class="img-responsive" alt="" src="https://wallpaperbrowse.com/media/images/i_love_music_2-wallpaper-7680x4800.jpg" />
+                    <div class='text-right'>
+                        <small class='text-muted'>{{s['title_ss'][0]}}</small>
+                    </div> <!-- text-right / end -->
+                </a>
+            </div> <!-- col-6 / end -->
+           </div> <!-- list-group / end -->
+{% endfor %}
+
+	</div> <!-- row / end -->
+</div> <!-- container / end -->
+	</div><!-- /row -->
+</div><!-- /container -->

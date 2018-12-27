@@ -1,0 +1,581 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<!------ Include the above in your HEAD tag ---------->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+ <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+
+<!------ Include the above in your HEAD tag ---------->
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+
+*:focus {
+    outline: none;
+}
+#title{
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #C51162;
+}
+#search-box input{
+  width: 99%;
+  font-size: 18px;
+  margin-top: 15px;
+  background-color: rgba(0,0,0,0.05);
+  border: 1px solid #333;
+  padding: 5px;
+  color: white;
+}
+#content{
+  padding: 10px;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  background-color: rgba(0,0,0,0.92);
+}
+#note{
+  font-size: 1.5em;
+  color: #C51162;
+  font-weight: bold;
+}
+#thumb{
+  float: left;
+  width: 150px;
+  height: auto;
+  text-align: center;
+  background: url('http://papers.co/wallpaper/papers.co-si54-dark-red-earth-gradation-blur-6-wallpaper.jpg') no-repeat center center fixed;
+  background-size: cover;
+  padding: 10px;
+  display: inline-block;
+}
+#thumb img{
+  width: 100%;
+  border-radius: 50%;
+}
+#song{
+  padding-left: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+}
+#song-title{
+  color: white;
+  font-weight: bold;
+  font-size: 1.7em;
+}
+#artist-name{
+  font-weight: lighter;
+  font-size: 1.2em;
+  margin-bottom: 15px;
+}
+#results{
+  padding: 20px;
+}
+#results-table{
+  margin-top: 400px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+thead tr th{
+  padding: 7px;
+  background-color: rgba(0,0,0,0.8);
+}
+tbody tr td{
+  line-height: 56px;
+}
+.list-play{
+  color: #C51162;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 2em;
+}
+.list-image{
+  border-radius: 50%;
+  padding: 5px;
+  float: left;
+  width: 48px;
+  margin-right: 5px;
+}
+#table-list tr:hover{
+  padding: 3px;
+  background-color: rgba(0,0,0,0.2);
+}
+
+
+  #some_chars{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  }
+
+#custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 23px;
+}
+.gallery-title
+{
+    font-size: 36px;
+    color: #42B32F;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 70px;
+}
+.gallery-title:after {
+    content: "";
+    position: absolute;
+    width: 7.5%;
+    left: 46.5%;
+    height: 45px;
+    border-bottom: 1px solid #5e5e5e;
+}
+.filter-button
+{
+    font-size: 18px;
+    border: 1px solid #42B32F;
+    border-radius: 5px;
+    text-align: center;
+    color: #42B32F;
+    margin-bottom: 30px;
+
+}
+.filter-button:hover
+{
+    font-size: 18px;
+    border: 1px solid #42B32F;
+    border-radius: 5px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #42B32F;
+
+}
+.btn-default:active .filter-button:active
+{
+    background-color: #42B32F;
+    color: white;
+}
+
+.port-image
+{
+    width: 100%;
+}
+
+.gallery_product
+{
+    margin-bottom: 30px;
+}
+   </style>
+   <script type=text/javascript>
+
+
+function audioPlayer() {
+  $(document).ready(function() {
+  $("#search-input").keypress(function(e) {
+    if(e.keyCode === 13) {
+      getSearch($("#search-input").val());
+      $("#table-list").html('');
+    }
+  })
+});
+
+var songs = [];
+
+function doPlay(index) {
+  console.log(songs[index]);
+  $("#song-title").html(songs[index].title_short);
+  $("#artist-name").html(songs[index].artist.name);
+  $("#song-picture").attr('src', songs[index].album.cover_xl);
+  $("#player").stop();
+  $("#player").attr('src', songs[index].preview);
+  $("#player")[0].play();
+}
+
+function calculateTotalTime(value) {
+  var minutes = Math.floor(value / 60),
+    seconds_int = value - minutes * 60,
+    seconds_str = seconds_int.toString(),
+    seconds = seconds_str.substr(0, 2),
+    time = minutes + ':' + seconds;
+
+  return time;
+}
+
+function getSearch(text) {
+  $.ajax({
+    type: 'GET',
+    url: 'https://api.deezer.com/search?q=' + text + '&output=jsonp',
+    dataType: 'jsonp',
+    success: function(data) {
+      var theHtml = '';
+      songs = data.data;
+      $.each(data.data, function(i, item){
+        theHtml += '<tr><td><img class="list-image" src="' + item.album.cover_small + '"> ' + item.title_short + '</td><td>' + item.artist.name + '</td><td>' + calculateTotalTime(item.duration) + '</td><td onClick="doPlay('+ i +');" class="list-play">' + '&#9205' + '</td></tr>';
+      });
+      $("#table-list").append(theHtml);
+    }
+  });
+}
+
+}
+
+
+
+
+
+        // $(function() {
+        //   $('#search_button').bind('click', function() {
+        //     $.ajax({
+        //         url: '/search',
+        //         data: $('form').serialize(),
+        //         type: 'POST',
+        //         success: function(response) {
+        //             console.log(response);
+        //             $('#song_container').html('');
+        //             $('#song_container').html(response);
+        //         },
+        //         error: function(error) {
+        //             console.log(error);
+        //         }
+        //     });
+        //   });
+        // });
+
+        function searchButton(){
+          $.ajax({
+                  url: '/search',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function searchButtonMoreLikeThis(){
+          $.ajax({
+                  url: '/searchMoreLikeThis',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+
+        function songsButton(){
+          $.ajax({
+                  url: '/call_to_related_song',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function artistButton(){
+          $.ajax({
+                  url: '/call_to_related_artists',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function albumButton(){
+          $.ajax({
+                  url: '/call_to_related_album',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function moodButton(){
+          $.ajax({
+                  url: '/call_to_related_mood',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function allButton(){
+          $.ajax({
+                  url: '/all',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      var x = document.getElementById("jumbotron");
+                      x.style.display = "block";
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+
+        function artistButtonMoreLikeThat(){
+          $.ajax({
+                  url: '/artistButtonMoreLikeThat',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function albumButtonMoreLikeThat(){
+          $.ajax({
+                  url: '/albumButtonMoreLikeThat',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function moodButtonMoreLikeThat(){
+          $.ajax({
+                  url: '/moodButtonMoreLikeThat',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function allButtonMoreLikeThat(){
+          $.ajax({
+                  url: '/allButtonMoreLikeThat',
+                  data: $('form').serialize(),
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function nextPage(id){
+          $.ajax({
+                  url: '/nextPage',
+                  data: {'id':id},
+                  type: 'POST',
+                  success: function(response) {
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function nextPageMoreLikeThis(id){
+          $.ajax({
+                  url: '/nextPageMoreLikeThis',
+                  data: {'id':id},
+                  type: 'POST',
+                  success: function(response) {
+
+                      console.log(response);
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                      audioPlayer();
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+        function moreLikeThat(id){
+          $.ajax({
+                  url: '/moreLikeThat',
+                  data: {'id':id},
+                  type: 'POST',
+                  success: function(response) {
+
+                      console.log(response);
+                      var x = document.getElementById("jumbotron");
+                      x.style.display = "none";
+                      // $('div.jumbotron').style.display = 'none';
+                      $('#song_container').html('');
+                      $('#song_container').html(response);
+                      audioPlayer();
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+        }
+  function runScript(e) {
+    //See notes about 'which' and 'key'
+    // e.preventDefault();
+    if (e.keyCode == 13) {
+        var tb = document.getElementById("search_button").click();
+        return false;
+    }
+}
+
+</script>
+<div class="jumbotron" id="jumbotron" style="background-color:white;">
+    <div class="container">
+<div class="row">
+       	<div class="col-md-3">
+       	</div>
+        <div class="col-md-6 align-items-center">
+        	<h2 class="align-items-center">Search Music</h2>
+            <div id="custom-search-input align-items-center">
+                <div class="input-group col-md-12">
+                  <form class="" action="/" method="post" role="form">
+                    <input type="text" class="form-control input-lg" onkeypress="return runScript(event)" placeholder="Search...." name="searchs" />
+</form>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="button" id="search_button" onclick="searchButton()">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+       	</div>
+	</div>
+  <div class="row">
+
+		<div align="center">
+			<h2 class="">What you want to search</h2>
+            <button class="btn btn-default filter-button" id="songs" data-filter="all" onclick="allButton()">All</button>
+            <button class="btn btn-default filter-button" id="songs" data-filter="all" onclick="songsButton()">Songs</button>
+            <button class="btn btn-default filter-button" id="artists" data-filter="hdpe" onclick="artistButton()">Artists</button>
+            <button class="btn btn-default filter-button" id="album" data-filter="sprinkle" onclick="albumButton()">Album</button>
+            <button class="btn btn-default filter-button" id="mood" data-filter="spray" onclick="moodButton()">Genre / Mood</button>
+        </div>
+	</div>
+    </div><!-- /container -->
+</div><!-- /jumbotron -->
+
+
+<!-- References: https://github.com/fancyapps/fancyBox -->
+<div class="container" id = "song_container">
+  {% for s in result %}
+
+  		<div class='list-group gallery' id='test' onclick="moreLikeThat({{s['id']}})">
+              <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3'>
+                  <a class="thumbnail fancybox" rel="ligthbox" href="#">
+                      <img class="img-responsive" style="width:100%; height:50%;" alt="" src="{{s['image']}}" />
+                      <div class='' id='some_chars'>
+                          <text class='' >{{s['title'][0]}}</text><br />
+                          <text class='' >{{s['artist'][0]}}</text><br />
+                          <text class='' >{{s['album'][0]}}</text><br />
+                          <text class='' >{{s['genres']}}</text>
+                      </div>
+                  </a>
+              </div>
+             </div>
+
+  {% endfor %}
+
+  <footer>
+<div class="row col-md-12">
+  {% for i in index %}
+  <button class="btn btn-default filter-button" id={{i}} data-filter="all" onclick="nextPage({{i}})">{{i}}</button>
+  {% endfor %}
+</div>
+</footer>
+</div>
+	 <!-- row / end -->
+</div> <!-- container / end -->
+	</div><!-- /row -->
+</div><!-- /container -->
